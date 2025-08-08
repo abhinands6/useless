@@ -117,6 +117,14 @@
       z-index: 1000;
     }
 
+    .worm {
+      position: absolute;
+      font-size: 25px;
+      pointer-events: none;
+      animation: wormCrawl 4s linear forwards;
+      z-index: 1002;
+    }
+
     @keyframes floatUp {
       0% {
         opacity: 1;
@@ -125,6 +133,32 @@
       100% {
         opacity: 0;
         transform: translateY(-100vh) scale(1.5);
+      }
+    }
+
+    @keyframes wormCrawl {
+      0% {
+        opacity: 1;
+        transform: translateX(100vw) translateY(0) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-100vw) translateY(0) rotate(360deg);
+      }
+    }
+
+    @keyframes wormCrawlUp {
+      0% {
+        opacity: 1;
+        transform: translateY(100vh) rotate(0deg) scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: translateY(50vh) rotate(180deg) scale(1.1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-20vh) rotate(360deg) scale(0.8);
       }
     }
   </style>
@@ -231,6 +265,48 @@
       }
     }
 
+    function createWorm(x, y, direction = 'up') {
+      const wormDiv = document.createElement('div');
+      wormDiv.className = 'worm';
+      
+      // Realistic worm emojis with different appearances
+      const wormEmojis = ['🐛', '🪱', '🐍', '🦎', '🐜', '🐞'];
+      const randomWorm = wormEmojis[Math.floor(Math.random() * wormEmojis.length)];
+      wormDiv.innerHTML = randomWorm;
+      
+      wormDiv.style.left = x + 'px';
+      wormDiv.style.top = y + 'px';
+      
+      // Create slow upward crawling animation
+      const duration = 6 + Math.random() * 4; // 6-10 seconds
+      const delay = Math.random() * 2; // 0-2 seconds delay
+      
+      wormDiv.style.animation = `wormCrawlUp ${duration}s linear ${delay}s forwards`;
+      
+      document.body.appendChild(wormDiv);
+      
+      // Remove worm after animation
+      setTimeout(() => {
+        wormDiv.remove();
+      }, (duration + delay) * 1000);
+    }
+
+    function createMultipleWorms(count) {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          // Random x position across screen width
+          const randomX = Math.random() * screenWidth;
+          // Start from bottom of screen
+          const randomY = screenHeight + 50;
+          
+          createWorm(randomX, randomY, 'up');
+        }, i * 300); // Stagger worms every 300ms
+      }
+    }
+
     function rebalance(changedId, newVal) {
       const oldVal = values[changedId];
       const diff = newVal - oldVal;
@@ -240,6 +316,12 @@
       if (changedId === 'love' && diff > 0) {
         const heartCount = Math.min(Math.ceil(diff / 5), 8); // Limit to 8 hearts max
         createMultipleHearts(heartCount);
+      }
+
+      // Create realistic worms when academics increases
+      if (changedId === 'academics' && diff > 0) {
+        const wormCount = Math.min(Math.ceil(diff / 3), 12); // More worms for higher increase
+        createMultipleWorms(wormCount);
       }
 
       const others = sliders.filter(s => s !== changedId);
@@ -326,6 +408,26 @@
     }
 
     randomizeValues();
+
+    // Thorough testing: simulate academics slider changes to test worm animation
+    function thoroughTest() {
+      let testValues = [10, 30, 60, 90, 100];
+      let index = 0;
+
+      function nextTest() {
+        if (index >= testValues.length) return;
+        const val = testValues[index];
+        document.getElementById('academics').value = val;
+        rebalance('academics', val);
+        index++;
+        setTimeout(nextTest, 4000); // wait 4 seconds between tests to observe animation
+      }
+
+      nextTest();
+    }
+
+    // Uncomment below line to run thorough test automatically on page load
+    thoroughTest();
   </script>
 
 </body>
