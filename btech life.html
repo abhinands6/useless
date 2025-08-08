@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>life of a btech student</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      color: #333;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #222;
+    }
+
+    .sliders {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .slider-container {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s ease;
+    }
+
+    .slider-container:hover {
+      transform: translateY(-4px);
+    }
+
+    .label {
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    input[type="range"] {
+      appearance: none;
+      height: 200px;
+      width: 8px;
+      background: #ddd;
+      border-radius: 10px;
+      cursor: pointer;
+      writing-mode: bt-lr;
+      -webkit-appearance: slider-vertical;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: #4CAF50;
+      box-shadow: 0 0 8px #4CAF50;
+    }
+
+    .slider-value {
+      font-size: 16px;
+      font-weight: bold;
+      width: 50px;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 40px;
+      font-size: 18px;
+      padding: 12px 28px;
+      border-radius: 12px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      font-size: 20px;
+      margin-top: 30px;
+      font-weight: 600;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎓 life of a btech student</h1>
+
+  <div class="sliders">
+    <div class="slider-container">
+      <div class="label">❤️ Love</div>
+      <div class="slider-row">
+        <input type="range" id="love" min="0" max="100" step="1">
+        <span class="slider-value" id="loveVal">0%</span>
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <div class="label">📚 Academics</div>
+      <div class="slider-row">
+        <input type="range" id="academics" min="0" max="100" step="1">
+        <span class="slider-value" id="academicsVal">0%</span>
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <div class="label">😴 Sleep</div>
+      <div class="slider-row">
+        <input type="range" id="sleep" min="0" max="100" step="1">
+        <span class="slider-value" id="sleepVal">0%</span>
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <div class="label">🧑‍🤝‍🧑 Social</div>
+      <div class="slider-row">
+        <input type="range" id="social" min="0" max="100" step="1">
+        <span class="slider-value" id="socialVal">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="showPrediction()">🔮 Get Life Prediction</button>
+  <p id="result"></p>
+
+  <script>
+    const sliders = ['love', 'academics', 'sleep', 'social'];
+    const values = {};
+    const MAX_TOTAL = 100;
+
+    function updateDisplay() {
+      sliders.forEach(id => {
+        const val = Math.round(values[id]);
+        document.getElementById(id + 'Val').innerText = val + "%";
+        document.getElementById(id).value = val;
+      });
+    }
+
+    function randomizeValues() {
+      let total = MAX_TOTAL;
+      sliders.forEach((id, index) => {
+        let val = (index === sliders.length - 1) ? total : Math.floor(Math.random() * (total + 1));
+        values[id] = val;
+        total -= val;
+        if (total < 0) total = 0;
+      });
+      updateDisplay();
+    }
+
+    function rebalance(changedId, newVal) {
+      const diff = newVal - values[changedId];
+      values[changedId] = newVal;
+
+      const others = sliders.filter(s => s !== changedId);
+      let totalOther = others.reduce((sum, s) => sum + values[s], 0);
+
+      if (totalOther === 0 || diff === 0) {
+        updateDisplay();
+        return;
+      }
+
+      others.forEach(s => {
+        const share = values[s] / totalOther;
+        let adjustment = share * diff;
+        values[s] = Math.max(0, Math.min(MAX_TOTAL, values[s] - adjustment));
+      });
+
+      let totalNow = sliders.reduce((sum, s) => sum + values[s], 0);
+      let scale = MAX_TOTAL / totalNow;
+      sliders.forEach(s => values[s] = Math.round(values[s] * scale));
+
+      updateDisplay();
+    }
+
+    sliders.forEach(id => {
+      document.getElementById(id).addEventListener('input', (e) => {
+        const newVal = parseFloat(e.target.value);
+        rebalance(id, newVal);
+      });
+    });
+
+    function showPrediction() {
+      const { love, academics, sleep, social } = values;
+      const maxVal = Math.max(love, academics, sleep, social);
+
+      let dominant = '';
+      if (love === maxVal) dominant = 'love';
+      else if (academics === maxVal) dominant = 'academics';
+      else if (sleep === maxVal) dominant = 'sleep';
+      else if (social === maxVal) dominant = 'social';
+
+      const responses = {
+        love: [
+          "❤️ GitHub is empty, but your heart is full.",
+          "💘 Relationship status: stable. CGPA: unstable.",
+          "📵 You're ghosting assignments for a crush.",
+          "❤️ Love is in the air—and not much else.",
+        ],
+        academics: [
+          "📚 GPA is high, but sleep is low.",
+          "🧠 Brain is full, but fridge is empty.",
+          "💻 You talk more to ChatGPT than humans.",
+          "🏆 Professor's pet vibes.",
+        ],
+        sleep: [
+          "😴 Your bed misses you less than your deadlines do.",
+          "🛌 Sleep level: pro. Social level: loading...",
+          "💤 Living your dream. Literally.",
+          "🌙 Sleep schedule: optimized. Life? Not sure.",
+        ],
+        social: [
+          "🎉 You're the main character, not the main coder.",
+          "📸 Your friends know your face, not your GitHub.",
+          "🧑‍🤝‍🧑 You're networking more than your Wi-Fi.",
+          "🎭 Life is a party. Deadlines aren’t invited.",
+        ],
+        balanced: [
+          "🤓 Balanced life, unbalanced brain.",
+          "😐 Suspiciously stable. Are you real?",
+          "🧘 Jack of all trades, master of none.",
+          "🤷‍♂️ Balanced? Or just confused? We'll never know.",
+        ]
+      };
+
+      const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+      let output = '';
+      if (love === academics && love === sleep && love === social) {
+        output = randomFrom(responses.balanced);
+      } else {
+        output = randomFrom(responses[dominant]);
+      }
+
+      document.getElementById("result").innerText = output;
+    }
+
+    randomizeValues();
+  </script>
+
+</body>
+</html>
