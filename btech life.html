@@ -11,161 +11,67 @@
       text-align: center;
       padding: 40px;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
+      min-height: 100vh;
     }
-
-    h1 {
-      margin-bottom: 30px;
-      font-size: 28px;
-      color: #222;
-    }
-
-    .sliders {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
+    h1 { margin-bottom: 30px; font-size: 28px; color: #222; }
+    .sliders { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
     .slider-container {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
+      background: white; padding: 20px; border-radius: 16px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform 0.2s ease;
-      position: relative;
+      display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.2s ease; position: relative;
     }
-
-    .slider-container:hover {
-      transform: translateY(-4px);
-    }
-
-    .label {
-      margin-bottom: 10px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .slider-container:hover { transform: translateY(-4px); }
+    .label { margin-bottom: 10px; font-weight: bold; font-size: 18px; }
+    .slider-row { display: flex; align-items: center; gap: 12px; }
     input[type="range"] {
-      appearance: none;
-      height: 200px;
-      width: 8px;
-      background: #ddd;
-      border-radius: 10px;
-      cursor: pointer;
-      writing-mode: bt-lr;
-      -webkit-appearance: slider-vertical;
+      appearance: none; height: 200px; width: 8px;
+      background: #ddd; border-radius: 10px; cursor: pointer;
+      writing-mode: bt-lr; -webkit-appearance: slider-vertical;
     }
-
     input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      height: 20px;
-      width: 20px;
-      border-radius: 50%;
-      background: #4CAF50;
-      box-shadow: 0 0 8px #4CAF50;
+      appearance: none; height: 20px; width: 20px; border-radius: 50%;
+      background: #4CAF50; box-shadow: 0 0 8px #4CAF50;
     }
-
-    .slider-value {
-      font-size: 16px;
-      font-weight: bold;
-      width: 50px;
-      text-align: center;
-    }
-
+    .slider-value { font-size: 16px; font-weight: bold; width: 50px; text-align: center; }
     button {
-      margin-top: 40px;
-      font-size: 18px;
-      padding: 12px 28px;
-      border-radius: 12px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: background 0.3s ease;
+      margin-top: 40px; font-size: 18px; padding: 12px 28px; border-radius: 12px;
+      border: none; background-color: #4CAF50; color: white; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.3s ease;
     }
-
-    button:hover {
-      background-color: #45a049;
-    }
-
-    #result {
-      font-size: 20px;
-      margin-top: 30px;
-      font-weight: 600;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
+    button:hover { background-color: #45a049; }
+    #result { font-size: 20px; margin-top: 30px; font-weight: 600; max-width: 500px; margin-left: auto; margin-right: auto; }
     .heart {
-      position: absolute;
-      font-size: 40px;
-      color: #ff69b4;
-      pointer-events: none;
-      animation: floatUp 2s ease-out forwards;
-      z-index: 1000;
+      position: absolute; font-size: 40px; color: #ff69b4;
+      pointer-events: none; animation: floatUp 2s ease-out forwards; z-index: 1000;
     }
-
     .worm {
-      position: absolute;
-      font-size: 25px;
-      pointer-events: none;
-      animation: wormCrawl 4s linear forwards;
-      z-index: 1002;
+      position: absolute; font-size: 40px; pointer-events: none;
+      animation: crawl 6s linear forwards; z-index: 1000; user-select: none;
     }
-
+    @keyframes crawl {
+      0% { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg) scaleY(1); }
+      20% { transform: translateX(5px) translateY(-20vh) rotate(10deg) scaleY(0.8); }
+      40% { transform: translateX(-5px) translateY(-40vh) rotate(-10deg) scaleY(1.2); }
+      60% { transform: translateX(5px) translateY(-60vh) rotate(10deg) scaleY(0.8); }
+      80% { transform: translateX(-5px) translateY(-80vh) rotate(-10deg) scaleY(1.2); }
+      100% { opacity: 0; transform: translateX(0) translateY(-100vh) rotate(0deg) scaleY(1); }
+    }
     @keyframes floatUp {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-100vh) scale(1.5);
-      }
-    }
-
-    @keyframes wormCrawl {
-      0% {
-        opacity: 1;
-        transform: translateX(100vw) translateY(0) rotate(0deg);
-      }
-      100% {
-        opacity: 0;
-        transform: translateX(-100vw) translateY(0) rotate(360deg);
-      }
-    }
-
-    @keyframes wormCrawlUp {
-      0% {
-        opacity: 1;
-        transform: translateY(100vh) rotate(0deg) scale(1);
-      }
-      50% {
-        opacity: 0.8;
-        transform: translateY(50vh) rotate(180deg) scale(1.1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-20vh) rotate(360deg) scale(0.8);
-      }
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100vh) scale(1.5); }
     }
   </style>
 </head>
 <body>
 
   <h1>🎓 life of a btech student</h1>
+
+  <button id="enableAudioBtn" style="margin-bottom: 20px; padding: 10px 20px; font-size: 16px;">Enable Audio</button>
+
+  <!-- Updated snoring sound link -->
+  <audio id="snoreSound" src="https://cdn.pixabay.com/download/audio/2025/02/06/audio_c68b8052d3.mp3?filename=male-snoring-297875.mp3" preload="auto" loop></audio>
 
   <div class="sliders">
     <div class="slider-container">
@@ -175,7 +81,6 @@
         <span class="slider-value" id="loveVal">0%</span>
       </div>
     </div>
-
     <div class="slider-container">
       <div class="label">📚 Academics</div>
       <div class="slider-row">
@@ -183,7 +88,6 @@
         <span class="slider-value" id="academicsVal">0%</span>
       </div>
     </div>
-
     <div class="slider-container">
       <div class="label">😴 Sleep</div>
       <div class="slider-row">
@@ -191,7 +95,6 @@
         <span class="slider-value" id="sleepVal">0%</span>
       </div>
     </div>
-
     <div class="slider-container">
       <div class="label">🧑‍🤝‍🧑 Social</div>
       <div class="slider-row">
@@ -202,7 +105,18 @@
   </div>
 
   <button onclick="showPrediction()">🔮 Get Life Prediction</button>
+  <button onclick="resetSliders()" style="margin-left: 10px; background-color: #ff6b6b;">🔄 Reset All Sliders</button>
   <p id="result"></p>
+  
+  <div style="margin-top: 30px;">
+    <h3>🏆 Scoreboard</h3>
+    <div style="margin-bottom: 15px;">
+      <input type="text" id="scoreName" placeholder="Enter name for this score" style="padding: 8px; margin-right: 10px; border-radius: 8px; border: 1px solid #ddd;">
+      <button onclick="saveScore()">💾 Save Current Score</button>
+      <button onclick="clearScoreboard()">🗑️ Clear All</button>
+    </div>
+    <div id="scoreboard" style="margin-top: 15px; max-height: 300px; overflow-y: auto;"></div>
+  </div>
 
   <script>
     const sliders = ['love', 'academics', 'sleep', 'social'];
@@ -231,131 +145,185 @@
     function createHeart(x, y) {
       const emojiDiv = document.createElement('div');
       emojiDiv.className = 'heart';
-      // Randomly choose heart or butterfly emoji
       const emoji = Math.random() < 0.5 ? '❤️' : '🦋';
       emojiDiv.innerHTML = emoji;
-      emojiDiv.style.left = x + 'px';
-      emojiDiv.style.top = y + 'px';
-      
-      // Add random horizontal offset for variety
       const randomX = (Math.random() - 0.5) * 60;
       emojiDiv.style.left = (x + randomX) + 'px';
-      
+      emojiDiv.style.top = y + 'px';
       document.body.appendChild(emojiDiv);
-      
-      // Remove emoji after animation
-      setTimeout(() => {
-        emojiDiv.remove();
-      }, 2000);
+      setTimeout(() => emojiDiv.remove(), 2000);
     }
 
     function createMultipleHearts(count) {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      const bottomY = screenHeight - 50; // Start near bottom of screen
-      
+      const bottomY = screenHeight - 50;
       for (let i = 0; i < count; i++) {
         setTimeout(() => {
-          // Random x position across the screen width
           const randomX = Math.random() * screenWidth;
-          // Slight random y position near bottom
           const randomY = bottomY + (Math.random() * 30 - 15);
           createHeart(randomX, randomY);
-        }, i * 100); // Stagger the hearts
+        }, i * 100);
       }
     }
 
-    function createWorm(x, y, direction = 'up') {
-      const wormDiv = document.createElement('div');
-      wormDiv.className = 'worm';
-      
-      // Realistic worm emojis with different appearances
-      const wormEmojis = ['🐛', '🪱', '🐍', '🦎', '🐜', '🐞'];
-      const randomWorm = wormEmojis[Math.floor(Math.random() * wormEmojis.length)];
-      wormDiv.innerHTML = randomWorm;
-      
-      wormDiv.style.left = x + 'px';
-      wormDiv.style.top = y + 'px';
-      
-      // Create slow upward crawling animation
-      const duration = 6 + Math.random() * 4; // 6-10 seconds
-      const delay = Math.random() * 2; // 0-2 seconds delay
-      
-      wormDiv.style.animation = `wormCrawlUp ${duration}s linear ${delay}s forwards`;
-      
-      document.body.appendChild(wormDiv);
-      
-      // Remove worm after animation
+    const snoreSound = document.getElementById('snoreSound');
+    const enableAudioBtn = document.getElementById('enableAudioBtn');
+    let audioEnabled = false;
+
+    // Enable audio after user clicks the button
+    enableAudioBtn.addEventListener('click', () => {
+      snoreSound.play()
+        .then(() => {
+          audioEnabled = true;
+          enableAudioBtn.style.display = 'none';
+          snoreSound.pause();
+          snoreSound.currentTime = 0;
+        })
+        .catch(err => console.warn('Audio unlock failed:', err));
+    });
+
+    let sleepStopTimeout;
+
+    let wormTimeout;
+    let persistentWorms = [];
+    let bicepsTimeout;
+    let persistentBiceps = [];
+
+    function createWorm(x, y) {
+      const worm = document.createElement('div');
+      worm.className = 'worm';
+      worm.innerHTML = '🐛';
+      worm.style.left = x + 'px';
+      worm.style.top = y + 'px';
+      document.body.appendChild(worm);
       setTimeout(() => {
-        wormDiv.remove();
-      }, (duration + delay) * 1000);
+        worm.remove();
+      }, 6000);
     }
 
-    function createMultipleWorms(count) {
+    function clearPersistentWorms() {
+      persistentWorms.forEach(worm => worm.remove());
+      persistentWorms = [];
+      if (wormTimeout) {
+        clearTimeout(wormTimeout);
+        wormTimeout = null;
+      }
+    }
+
+    function updatePersistentWorms(count) {
+      clearPersistentWorms();
+      const screenHeight = window.innerHeight;
+      for (let i = 0; i < count; i++) {
+        const randomX = Math.random() * window.innerWidth;
+        const randomY = screenHeight;
+        createWorm(randomX, randomY);
+      }
+      wormTimeout = setTimeout(() => {
+        clearPersistentWorms();
+      }, 6000);
+    }
+
+    function createBiceps(x, y, delay) {
+      const biceps = document.createElement('div');
+      biceps.className = 'biceps';
+      biceps.innerHTML = '💪';
+      biceps.style.left = x + 'px';
+      biceps.style.top = y + 'px';
+      biceps.style.position = 'absolute';
+      biceps.style.animation = `floatUp 3s ease-out ${delay}s forwards`;
+      document.body.appendChild(biceps);
+      setTimeout(() => {
+        biceps.remove();
+      }, 3000 + delay * 1000);
+    }
+
+    function clearPersistentBiceps() {
+      persistentBiceps.forEach(biceps => biceps.remove());
+      persistentBiceps = [];
+      if (bicepsTimeout) {
+        clearTimeout(bicepsTimeout);
+        bicepsTimeout = null;
+      }
+    }
+
+    function updatePersistentBiceps(count) {
+      clearPersistentBiceps();
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
       
       for (let i = 0; i < count; i++) {
-        setTimeout(() => {
-          // Random x position across screen width
-          const randomX = Math.random() * screenWidth;
-          // Start from bottom of screen
-          const randomY = screenHeight + 50;
-          
-          createWorm(randomX, randomY, 'up');
-        }, i * 300); // Stagger worms every 300ms
+        const randomX = Math.random() * screenWidth;
+        const randomY = screenHeight + 50;
+        const randomDelay = Math.random() * 2;
+        createBiceps(randomX, randomY, randomDelay);
       }
-    }
-
-    function rebalance(changedId, newVal) {
-      const oldVal = values[changedId];
-      const diff = newVal - oldVal;
-      values[changedId] = newVal;
-
-      // Create hearts when love increases
-      if (changedId === 'love' && diff > 0) {
-        const heartCount = Math.min(Math.ceil(diff / 5), 8); // Limit to 8 hearts max
-        createMultipleHearts(heartCount);
-      }
-
-      // Create realistic worms when academics increases
-      if (changedId === 'academics' && diff > 0) {
-        const wormCount = Math.min(Math.ceil(diff / 3), 12); // More worms for higher increase
-        createMultipleWorms(wormCount);
-      }
-
-      const others = sliders.filter(s => s !== changedId);
-      let totalOther = others.reduce((sum, s) => sum + values[s], 0);
-
-      if (totalOther === 0 || diff === 0) {
-        updateDisplay();
-        return;
-      }
-
-      others.forEach(s => {
-        const share = values[s] / totalOther;
-        let adjustment = share * diff;
-        values[s] = Math.max(0, Math.min(MAX_TOTAL, values[s] - adjustment));
-      });
-
-      let totalNow = sliders.reduce((sum, s) => sum + values[s], 0);
-      let scale = MAX_TOTAL / totalNow;
-      sliders.forEach(s => values[s] = Math.round(values[s] * scale));
-
-      updateDisplay();
+      
+      bicepsTimeout = setTimeout(() => {
+        clearPersistentBiceps();
+      }, 5000);
     }
 
     sliders.forEach(id => {
       document.getElementById(id).addEventListener('input', (e) => {
         const newVal = parseFloat(e.target.value);
-        rebalance(id, newVal);
+        const oldVal = values[id] || 0;
+        values[id] = newVal;
+        const diff = newVal - oldVal;
+
+        if (id === 'love' && diff > 0) {
+          createMultipleHearts(Math.min(Math.ceil(newVal / 5), 8));
+        }
+
+        if (id === 'academics' && diff > 0) {
+          const wormCount = Math.min(Math.ceil(newVal / 5), 6);
+          updatePersistentWorms(wormCount);
+        }
+
+        if (id === 'social' && diff > 0) {
+          const bicepsCount = Math.min(Math.ceil(newVal / 5), 6);
+          updatePersistentBiceps(bicepsCount);
+        }
+
+        if (id === 'sleep') {
+          if (audioEnabled) {
+            if (newVal > 0) {
+              snoreSound.volume = newVal / 100;
+              if (snoreSound.paused) snoreSound.play().catch(() => {});
+              clearTimeout(sleepStopTimeout);
+              sleepStopTimeout = setTimeout(() => {
+                snoreSound.pause();
+                snoreSound.currentTime = 0;
+              }, 3000);
+            } else {
+              snoreSound.pause();
+              snoreSound.currentTime = 0;
+            }
+          }
+        } else if (id !== 'academics' && id !== 'social') {
+          clearTimeout(sleepStopTimeout);
+          snoreSound.pause();
+          snoreSound.currentTime = 0;
+        }
+
+        const others = sliders.filter(s => s !== id);
+        let totalOther = others.reduce((sum, s) => sum + values[s], 0);
+        if (totalOther !== 0 && diff !== 0) {
+          others.forEach(s => {
+            const share = values[s] / totalOther;
+            values[s] = Math.max(0, Math.min(MAX_TOTAL, values[s] - share * diff));
+          });
+          let totalNow = sliders.reduce((sum, s) => sum + values[s], 0);
+          let scale = MAX_TOTAL / totalNow;
+          sliders.forEach(s => values[s] = Math.round(values[s] * scale));
+        }
+        updateDisplay();
       });
     });
 
     function showPrediction() {
       const { love, academics, sleep, social } = values;
       const maxVal = Math.max(love, academics, sleep, social);
-
       let dominant = '';
       if (love === maxVal) dominant = 'love';
       else if (academics === maxVal) dominant = 'academics';
@@ -395,40 +363,74 @@
         ]
       };
 
-      const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
+      const randomFrom = arr => arr[Math.floor(Math.random() * arr.length)];
       let output = '';
       if (love === academics && love === sleep && love === social) {
         output = randomFrom(responses.balanced);
       } else {
         output = randomFrom(responses[dominant]);
       }
-
       document.getElementById("result").innerText = output;
     }
 
     randomizeValues();
-
-    // Thorough testing: simulate academics slider changes to test worm animation
-    function thoroughTest() {
-      let testValues = [10, 30, 60, 90, 100];
-      let index = 0;
-
-      function nextTest() {
-        if (index >= testValues.length) return;
-        const val = testValues[index];
-        document.getElementById('academics').value = val;
-        rebalance('academics', val);
-        index++;
-        setTimeout(nextTest, 4000); // wait 4 seconds between tests to observe animation
-      }
-
-      nextTest();
+    
+    // Scoreboard functionality
+    function saveScore() {
+      const scores = JSON.parse(localStorage.getItem('btechScores') || '[]');
+      const nameInput = document.getElementById('scoreName');
+      const name = nameInput.value.trim() || 'Unnamed Score';
+      
+      const score = {
+        name: name,
+        date: new Date().toLocaleString(),
+        love: values.love,
+        academics: values.academics,
+        sleep: values.sleep,
+        social: values.social,
+        prediction: document.getElementById('result').innerText
+      };
+      scores.unshift(score); // Add to beginning
+      if (scores.length > 10) scores.pop(); // Keep only last 10
+      localStorage.setItem('btechScores', JSON.stringify(scores));
+      nameInput.value = ''; // Clear input after saving
+      displayScoreboard();
     }
-
-    // Uncomment below line to run thorough test automatically on page load
-    thoroughTest();
+    
+    function clearScoreboard() {
+      localStorage.removeItem('btechScores');
+      displayScoreboard();
+    }
+    
+    function displayScoreboard() {
+      const scores = JSON.parse(localStorage.getItem('btechScores') || '[]');
+      const scoreboard = document.getElementById('scoreboard');
+      
+      if (scores.length === 0) {
+        scoreboard.innerHTML = '<p>No scores saved yet!</p>';
+        return;
+      }
+      
+      scoreboard.innerHTML = scores.map((score) => `
+        <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; border-radius: 8px; background: white;">
+          <strong>${score.name}</strong> - ${score.date}<br>
+          ❤️ Love: ${score.love}% | 📚 Academics: ${score.academics}%<br>
+          😴 Sleep: ${score.sleep}% | 🧑‍🤝‍🧑 Social: ${score.social}%<br>
+          <em>${score.prediction}</em>
+        </div>
+      `).join('');
+    }
+    
+    // Load scoreboard on page load
+    displayScoreboard();
+    
+    function resetSliders() {
+      sliders.forEach(id => {
+        values[id] = 0;
+      });
+      updateDisplay();
+      document.getElementById('result').innerText = '';
+    }
   </script>
-
 </body>
 </html>
